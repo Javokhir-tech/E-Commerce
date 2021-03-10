@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% if winnersItem %}
+    <div class="alert alert-success">
+        Congratulations! {{winnersItem}} sold to {{winnersName}} for ${{winnersBid}}.
+    </div>
+{% else %}
+    <div class="alert alert-danger">
+        Nobody placed bid on this item, no winner!
+    </div>
+{% endif %}
+<a class="nav-link" href="{% url 'index' %}">Get back to Active Listings page.</a>
+{% endblock %}

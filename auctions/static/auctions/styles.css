@@ -1,0 +1,48 @@
+body {
+    padding: 10px;
+}
+/* index */
+.activeListings {
+    margin-bottom: 10px;
+}
+
+.mediaBox {
+    width: 200px;    
+    height: 200px;
+    /* center image in div horizontally and vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lot_image {
+    width: 100%;
+}
+
+.mediaBox2 {
+    width: 300px;    
+    height: 300px;
+    /* center image in div horizontally and vertically */
+    display: flex;
+    /* horizontally */
+    justify-content: center;
+    align-items: start;    
+}
+
+.desc {
+    font-style: italic;
+}
+
+.comment {
+    padding: 10px;
+    background-color:  rgb(211, 210, 210);
+    border-radius: 5px;
+}
+
+.commentbody {
+    background-color: rgb(245, 245, 244);
+    border-radius: 5px;
+    padding-left: 45px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}

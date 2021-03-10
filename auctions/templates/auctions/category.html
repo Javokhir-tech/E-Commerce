@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<br>
+{% if message %}
+<div class="alert alert-danger">{{ message }}</div>
+{% endif %}
+
+
+<h2 class="card-title h2">ACTIVE LISTINGS in "{{categ}}" category</h2>
+    
+{% if empty %}
+    <div>No Listing Found</div>
+{% else %}
+{% for product in products %}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="media position-relative">
+            <div class="mediaBox mr-4">
+                <img src="{{product.image}}" class=" mg-thumbnail lot_image" alt="image">
+            </div>
+            <div class="media-body">
+                <h5 class="mt-0">{{product.title}}</h5>
+                <h6>Price: ${{product.initialBid}}</h6>
+                <p class="desc">{{product.description}}</p>
+                <p>Category: {{product.category}}</p>
+                <p>Created: {{product.created_time}}</p>
+                <a href="{% url 'listing' product.id %}" class="btn btn-outline-primary" role="button">More</a>
+            </div>
+        </div>
+    </li>
+</ul>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

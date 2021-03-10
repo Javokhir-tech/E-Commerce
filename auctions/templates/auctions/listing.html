@@ -1,0 +1,119 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2 class="title">{{Lot.title}}</h2>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-info" role="alert">
+    {{message}}
+</div>
+{% endfor %}
+{% endif %}
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="media position-relative">
+            <div class="mediaBox2 mr-4">
+                <img src="{{Lot.image}}" class=" mg-thumbnail lot_image" alt="image">
+            </div>
+            <div class="media-body">
+                <h5 class="mt-0">{{Lot.title}}</h5>
+                <h6>Price: ${{Lot.initialBid}}</h6>
+                <p class="desc">{{Lot.description}}</p>
+                <p>Category: {{Lot.category}}</p>
+                <p>Placed by {{Lot.auctioner}}</p>
+                <p>Created: {{Lot.created_time}}</p>
+                {% if user.is_authenticated %}
+                    {% if listing_in_watchlist %}
+                        <form action="{% url 'watchlist_add' Lot.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-outline-primary" value="Remove from watchlist">
+                        </form>
+                    {% else %}
+                        <form action="{% url 'watchlist_add' Lot.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-outline-primary" value="Add to watchlist">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </li>
+</ul>
+{% if bidInfoExists %}
+    <h6>Current Active bid: ${{bidInfo.bid}}.</h6>
+    <h6>Current bidder: {{bidInfo.holder}}.</h6>
+    <blockquote class="blockquote-footer">{{numberOfBids}} bid(s) so far.</blockquote>
+{% else %}
+    <h6>No current bids</h5>
+    <blockquote class="blockquote-footer">(be first to bid.)</blockquote>
+    <p></p>
+{% endif %}
+
+{% if user.is_authenticated %}
+{% if lotOwnedByUser %}
+        <div>
+            <a class="btn btn-outline-primary" href="{% url 'closebid' Lot.id %}" role="button">Close bid</a>
+        </div>
+{% else %}
+<div class="form-group">
+    <form action="{% url 'listing' Lot.id %}" method="POST">
+        {% csrf_token %}
+        <div class="col-6">
+            <div class="input-group mb-3">
+            {% if bidInfoExists %}
+                <input type="number" placeholder="Enter your bid. (Current bid is ${{bidInfo.bid}})" class="form-control"
+                    min='{{bidInfo.bid}}' name="usersBid" required>
+            {% else %}
+                <input type="number" placeholder="Enter your bid. (Initial price is ${{Lot.initialBid}})" class="form-control"
+                    min='{{Lot.initialBid}}' name="usersBid" required>
+            {% endif %}
+                <!---->
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Place bid</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endif %}
+{% else %}
+<div>Register or login to be able to bid on the item.</div>
+{% endif %}
+<br>
+
+{% if user.is_authenticated %}
+<div class="form-group">
+    <form action="{% url 'comments' Lot.id %}" method="POST">
+        {% csrf_token %}
+        <div class="col-6">
+            <div class="input-group mb-3">
+                <input type="text" placeholder="Enter your comments here"
+                    class="form-control" name="usersComment" required>
+                
+                <!---->
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Add Comments</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+<div class="container-fluid">
+    <h5>Comments</h5>
+    {% for comment in userComment %}
+    <div class="container-fluid">
+        <div class="row comment col-4">
+            <div class="col-lg-3"><strong>{{comment.userComment}}</strong> </div>
+            <div class="col-lg-7 blockquote-footer">{{comment.timePosted}}</div>
+        </div>
+        <div class="col-4 commentbody">{{comment.comments}}</div>
+    </div>
+        
+    {% endfor %}
+</div>
+{% endblock %}

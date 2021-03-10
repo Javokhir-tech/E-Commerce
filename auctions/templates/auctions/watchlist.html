@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+    {{message}}
+</div>
+{% endfor %}
+{% endif %}
+<h2 class="title">{{user}}'s Watchlist</h2>
+
+{% for item in watchlist %}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="media position-relative">
+            <div class="mediaBox2 mr-4">
+                <img src="{{item.image}}" class=" mg-thumbnail lot_image" alt="image">
+            </div>
+            <div class="media-body">
+                <h5 class="mt-0">{{item.title}}</h5>
+                <h6>Price: ${{item.initialBid}}</h6>
+                <p class="desc">{{item.description}}</p>
+                <p>Category: {{item.category}}</p>
+                <a href="{%url 'listing' item.id%}" role="button">View in details</a>
+            </div>
+        </div>
+    </li>
+</ul>
+{% endfor %}
+{% endblock %}

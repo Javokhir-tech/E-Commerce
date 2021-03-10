@@ -1,0 +1,75 @@
+{% extends "auctions/layout.html" %}
+
+{% block nav %}
+
+<div class="dropdown">
+    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Categories
+    </a>
+    
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="{% url 'categories' %}">View All</a>
+    {% for lot in categories %}
+        
+        <a class="dropdown-item" href="{% url 'category' lot.category %}">{{lot.category}}</a>    
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block body %}
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="alert alert-danger" role="alert">
+            {{message}}
+        </div>
+    {% endif %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+    <div class="alert alert-info" role="alert">
+        {{message}}
+    </div>
+    {% endif %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+<!-- Show winner -->
+
+
+
+
+<h2 class="title">Active Listings</h2>
+
+<!--{{Lots}}-->
+{% for lot in Lots %}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="media position-relative">
+            <div class="mediaBox mr-4">
+                <img src="{{lot.image}}" class=" mg-thumbnail lot_image" alt="image">
+            </div>
+            <div class="media-body">
+                <h5 class="mt-0">{{lot.title}}</h5>
+                <h6>Price: ${{lot.initialBid}}</h6>
+                <p class="desc">{{lot.description}}</p>
+                <p>Category: {{lot.category}}</p>
+                <p>Created: {{lot.created_time}}</p>
+                <a href="{%url 'listing' lot.id %}" class="btn btn-outline-primary" role="button">More</a>
+            </div>
+        </div>
+    </li>
+</ul>
+
+{% empty %}
+<div>No Active Listings</div>
+{% endfor %}
+
+{% endblock %}
